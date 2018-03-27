@@ -64,7 +64,7 @@
                     为他拉票
                   </b-btn>
 
-                  <b-btn v-if="truebutton" class="btn green" variant="success" @click="$modal.show('error-modal');spot(item);">
+                  <b-btn v-if="truebutton" class="btn green" variant="success" @click="$modal.show('error-modal');spot(item);getUserVote(item)">
                     开始投票
                   </b-btn>
                   <b-btn v-else disabled variant="secondary">暂停投票</b-btn>
@@ -155,6 +155,9 @@
 import axios from "axios";
 import common from "../common/common";
 import bus from "../bus";
+import * as types from "../store/types";
+import { mapState } from "vuex";
+
 export default {
   name: "home",
 
@@ -163,9 +166,10 @@ export default {
       ByTicket: {},
       PeopleData: {},
       nextime: {},
+      UserVote: { balanceAmount:"1234123" },
       isShow: 0,
-      truebutton: 1
-      // enableVote:0,
+      truebutton: 1    //测试用投票按钮
+      // enableVote:0,  根据后台返回true或false开关投票按钮
     };
   },
   ready() {},
@@ -185,21 +189,13 @@ export default {
     conditionalShow() {
       this.$modal.show("conditional-modal");
     },
-    isLogin() {
+    isLogin(item) {
       console.log(isLogin);
-      if ($store.state.isLogin) {
-        // 通过vuex state获取当前的token是否存在
-        next();
-      } else {
-        next({
-          path: "/login",
-          query: {
-            redirect: to.fullPath
-          } // 将跳转的路由path作为参数，登录成功后跳转到该路由
-        });
-      }
+      this.$store.commit(types.LOGIN);
+      this.$router.push({
+        path: "/login"
+      });
     },
-
     getByPeopleData() {
       // 获取人数排行榜
       const url = `${
@@ -247,7 +243,27 @@ export default {
       var msg = item.id;
       console.log(msg);
       bus.$emit("spot", msg);
-    }
+    },
+    /*
+    getUserVote() {
+      // 验证用户是否登录
+      const url = `${
+        common.apihost
+      }/vote/serverGetBalanceAmountByUserIdAndCoinId.o`;
+      axios.get(url).then(
+        response => {
+          // this.UserVote = response.data.result;
+          if(response.statusCode == 1000){
+            console.log('登录失败');
+          }else{
+            console.log('成功');
+          }
+            console.log(response);
+        },
+        err => {}
+      )
+    },
+    */
   }
 };
 </script>

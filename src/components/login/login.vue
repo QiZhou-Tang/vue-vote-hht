@@ -63,6 +63,8 @@ import { loginRegist } from "../../api/loginRegist";
 import { OK } from "../../api/config";
 import { cookieUtil } from "../../common/js/cookieUtil";
 import { mapMutations } from "vuex";
+import axios from "axios"
+// import * as types from "../../store/types";
 
 export default {
   data() {
@@ -312,7 +314,7 @@ export default {
   },
   methods: {
     usessionFinishFunc(obj) {
-      //        console.log("父组件接收到了消息",obj);
+             console.log("父组件接收到了消息",obj);
       this._getValidateImg();
     },
     getValidateImg() {
@@ -321,7 +323,7 @@ export default {
     },
 
     _getValidateImg() {
-      //        console.log("_getValidateImg", loginRegist.validateImgUrl);
+             console.log("_getValidateImg", loginRegist.validateImgUrl);
       this.validateImg = loginRegist.validateImgUrl + Math.random();
     },
     handleLogin() {

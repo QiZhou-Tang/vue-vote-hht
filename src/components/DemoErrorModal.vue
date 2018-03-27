@@ -2,7 +2,10 @@
   <modal name="error-modal" :classes="['v--modal', 'error-modal', hasBugs && 'has-bugs']" :pivot-y="0.2" :width="600" :height="400" @before-open="beforeOpen">
     <div class="error-modal-content">
       <div class="bugs-label text-light">票数: {{bugCount}}</div>
-
+      <div class="username">
+        <span class="text-light">账户可用积分:</span>
+        <span class="text-light">{{voteNumber}}</span>
+      </div>
       <!-- <input type="text"> -->
       <div class="input-group input-group-lg">
         <div class="input-group-prepend">
@@ -31,10 +34,11 @@ export default {
   data() {
     return {
       bugCount: {},
-      message: "",
+      // message: "",
       hasBugs: false,
       PeopleData: {},
-      msg: "传值过来吖"
+      msg: "传值过来吖",
+      voteNumber: 123
     };
   },
   beforeCreate() {},
@@ -53,21 +57,21 @@ export default {
       this.bugCount = Math.round(Math.random() * 1) + 1;
     },
     dj() {
-      const url = `${
-        common.apihost
-      }vote/serverCreateVote.o`;
+      const url = `${common.apihost}vote/serverCreateVote.o`;
       const params = {
         voteNumber: this.bugCount,
         candidateCoinId: this.msg
       };
-      axios.get(url, {
-        params:params
-      }).then(
-        response => {
-          console.log(response);
-        },
-        err => {}
-      );
+      axios
+        .get(url, {
+          params: params
+        })
+        .then(
+          response => {
+            console.log(response);
+          },
+          err => {}
+        );
     }
   },
   mounted() {

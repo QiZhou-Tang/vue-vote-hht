@@ -30,9 +30,9 @@
           </b-nav-form> -->
 
           <b-navbar-nav right>
-            <b-nav-item v-if="userName">{{userName}}</b-nav-item>
+            <b-nav-item v-if="title">{{title}}</b-nav-item>
             <b-nav-item v-else to="/login">登录</b-nav-item>
-            <b-nav-item v-if="userName" @click="_logout">登出</b-nav-item>
+            <b-nav-item v-if="token" @click="logout">登出</b-nav-item>
             <b-nav-item v-else href="http://hht.one/#/regist">注册</b-nav-item>
           </b-navbar-nav>
 
@@ -104,7 +104,8 @@ import Home from "./components/home";
 import { loginRegist } from "./api/config";
 import { cookieUitl } from "./common/js/cookieUtil";
 import { OK } from "./api/config";
-import { mapMutations } from "vuex";
+import { mapMutations, mapState } from "vuex";
+import * as types from "./store/types";
 
 export default {
   name: "App",
@@ -115,12 +116,25 @@ export default {
   },
   data() {
     return {
-      mobile: '',
-      registJump: '',
-      userName: '',
-      loginJump: ''
+      mobile: "",
+      registJump: "",
+      // title: "",
+      // token:"",
+      loginJump: ""
     };
-  }
+  },
+  computed: mapState({
+    title: state => state.title,
+    token: state => state.token
+  }),
+  methods: mapState({
+    logout() {
+      this.$store.commit(types.LOGOUT);
+      this.$router.push({
+        path: "/"
+      });
+    }
+  })
   // store: store
 };
 </script>

@@ -18,13 +18,6 @@ const router = new Router({
     {
       path: '/home',
       component: Home,
-      children: [{
-        path: '/vote',
-        meta: {
-          requireAuth: true,
-        },
-        component: Vote
-      }]
     },
     {
       path: '/help',
@@ -44,7 +37,7 @@ router.beforeEach((to, from, next) => {
   if (to.meta.requireAuth) { // 判断该路由是否需要登录权限
 
     console.log("路由获取值：", store.state);
-    if (store.state.isLogin) { // 通过vuex state获取当前的token是否存在
+    if (store.state.token) { // 通过vuex state获取当前的token是否存在
       next();
     } else {
       next({
